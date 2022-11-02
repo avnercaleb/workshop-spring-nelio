@@ -11,11 +11,6 @@ import com.nelio.curso.entities.User;
 @RequestMapping("/users")
 public class UserController {
 	
-	private User user;
-	
-	public UserController(User user) {		
-		this.user = user;
-	}
 
 	@GetMapping
 	public ResponseEntity<User> findAll(){
