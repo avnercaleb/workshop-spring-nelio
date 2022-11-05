@@ -2,7 +2,6 @@ package com.nelio.curso.config;
 
 import java.time.Instant;
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -10,10 +9,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.nelio.curso.entities.Category;
 import com.nelio.curso.entities.Order;
+import com.nelio.curso.entities.OrderItem;
 import com.nelio.curso.entities.Product;
 import com.nelio.curso.entities.User;
 import com.nelio.curso.entities.enums.OrderStatus;
 import com.nelio.curso.repositories.CategoryRepository;
+import com.nelio.curso.repositories.OrderItemRepository;
 import com.nelio.curso.repositories.OrderRepository;
 import com.nelio.curso.repositories.ProductRepository;
 import com.nelio.curso.repositories.UserRepository;
@@ -26,15 +27,15 @@ public class TesteConfig implements CommandLineRunner{
 	private OrderRepository orderRepository;	
 	private CategoryRepository categoryRepository;
 	private ProductRepository productRepository;
+	private OrderItemRepository orderItemRepository;
 
-	public TesteConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository, ProductRepository productRepository) {		
+	public TesteConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository, ProductRepository productRepository, OrderItemRepository orderItemRepository) {		
 		this.userRepository = userRepository;
 		this.orderRepository = orderRepository;
 		this.categoryRepository = categoryRepository;
 		this.productRepository = productRepository;
+		this.orderItemRepository = orderItemRepository;
 	}
-
-
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -69,6 +70,13 @@ public class TesteConfig implements CommandLineRunner{
 		userRepository.saveAll(Arrays.asList(u1, u2));
 		orderRepository.saveAll(Arrays.asList(o1, o2, o3));		
 		productRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5));
+		
+		OrderItem oi1 = new OrderItem(o1, p1, 2, p1.getPrice());
+		OrderItem oi2 = new OrderItem(o1, p3, 1, p3.getPrice());
+		OrderItem oi3 = new OrderItem(o2, p3, 2, p3.getPrice());
+		OrderItem oi4 = new OrderItem(o3, p5, 2, p5.getPrice());
+		
+		orderItemRepository.saveAll(Arrays.asList(oi1, oi2, oi3, oi4));
 	}
 
 }
