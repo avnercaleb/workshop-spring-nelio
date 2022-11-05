@@ -2,6 +2,7 @@ package com.nelio.curso.config;
 
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -9,10 +10,12 @@ import org.springframework.context.annotation.Profile;
 
 import com.nelio.curso.entities.Category;
 import com.nelio.curso.entities.Order;
+import com.nelio.curso.entities.Product;
 import com.nelio.curso.entities.User;
 import com.nelio.curso.entities.enums.OrderStatus;
 import com.nelio.curso.repositories.CategoryRepository;
 import com.nelio.curso.repositories.OrderRepository;
+import com.nelio.curso.repositories.ProductRepository;
 import com.nelio.curso.repositories.UserRepository;
 
 @Configuration
@@ -22,11 +25,13 @@ public class TesteConfig implements CommandLineRunner{
 	private UserRepository userRepository;
 	private OrderRepository orderRepository;	
 	private CategoryRepository categoryRepository;
+	private ProductRepository productRepository;
 
-	public TesteConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository) {		
+	public TesteConfig(UserRepository userRepository, OrderRepository orderRepository, CategoryRepository categoryRepository, ProductRepository productRepository) {		
 		this.userRepository = userRepository;
 		this.orderRepository = orderRepository;
 		this.categoryRepository = categoryRepository;
+		this.productRepository = productRepository;
 	}
 
 
@@ -45,9 +50,16 @@ public class TesteConfig implements CommandLineRunner{
 		Category cat2 = new Category(null, "Books");
 		Category cat3 = new Category(null, "Computers");
 		
+		Product p1 = new Product(null, "The Lord of the Rings", "Lorem ipsum dolor sit amet, consectetur.", 90.5, "");
+		Product p2 = new Product(null, "Smart TV", "Nulla eu imperdiet purus. Maecenas ante.", 2190.0, "");
+		Product p3 = new Product(null, "Macbook Pro", "Nam eleifend maximus tortor, at mollis.", 1250.0, "");
+		Product p4 = new Product(null, "PC Gamer", "Donec aliquet odio ac rhoncus cursus.", 1200.0, "");
+		Product p5 = new Product(null, "Rails for Dummies", "Cras fringilla convallis sem vel faucibus.", 100.99, "");
+		
 		userRepository.saveAll(Arrays.asList(u1, u2));
 		orderRepository.saveAll(Arrays.asList(o1, o2, o3));
 		categoryRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
+		productRepository.saveAll(List.of(p1, p2, p3, p4, p5));
 	}
 
 }
