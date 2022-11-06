@@ -3,10 +3,14 @@ package com.nelio.curso.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.nelio.curso.entities.User;
 import com.nelio.curso.repositories.UserRepository;
+import com.nelio.curso.service.exceptions.DatabaseException;
+import com.nelio.curso.service.exceptions.ResourceNotFoundException;
 
 @Service
 public class UserService {
@@ -24,7 +28,7 @@ public class UserService {
 	
 	public User findById(Long id) {
 		Optional<User> user = repository.findById(id);
-		return user.get();
+		return user.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public User insert(User user) {
@@ -32,7 +36,15 @@ public class UserService {
 	}
 	
 	public void delete(Long id) {
-		repository.deleteById(id);
+		try {
+			repository.deleteById(id);
+		}
+		catch(EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		}
+		catch(DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
 	}
 	
 	public User update(Long id, User obj) {
