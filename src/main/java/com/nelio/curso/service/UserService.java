@@ -3,6 +3,8 @@ package com.nelio.curso.service;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -48,9 +50,14 @@ public class UserService {
 	}
 	
 	public User update(Long id, User obj) {
-		User user = repository.getReferenceById(id);
-		updateData(user, obj);
-		return repository.save(user);
+		try {
+			User user = repository.getReferenceById(id);
+			updateData(user, obj);
+			return repository.save(user);
+		}
+		catch(EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User user, User obj) {		
